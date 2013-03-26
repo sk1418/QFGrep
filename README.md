@@ -14,4 +14,5 @@ The QFGrep plugin would be helpful when you got a lot of entries in Quickfix.  F
 - message color-highligting customization
 
 ##Screencast
-tbd
+
+![QFGrep GIF Animation](https://lh6.googleusercontent.com/--RzG-d1pRmc/UVDy8gPgjLI/AAAAAAAAGq4/beCMVN6TJXg/s971/20130326_020156.gif, "screencast")

@@ -1,9 +1,17 @@
 *QFGrep.txt*  A plugin for filtering Quickfix entries
 
+   ____    ____________              
+  / __ \  / ____/ ____/_______  ____ 
+ / / / / / /_  / / __/ ___/ _ \/ __ \
+/ /_/ / / __/ / /_/ / /  /  __/ /_/ /
+\___\_\/_/    \____/_/   \___/ .___/ 
+                            /_/      
+
 Author:  Kai Yuan
 
 This plugin requires Vim 7.3 or later.
 
+==============================================================================
 Help on using QFGrep
 
 1. Introduction .......................... |QFGrep-intro|

@@ -51,7 +51,7 @@ QFRestore
 		retore original Quickfix entries
 
 ==============================================================================
-3. CONFIGURATION                                       *numbers-configuration*
+3. CONFIGURATION                                       *QFGrep-configuration*
 
                                                               *QFGrep-mapping*
 There are only two mappings in QFG-Grep, they could be customized by setting

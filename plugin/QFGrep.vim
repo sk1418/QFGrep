@@ -1,6 +1,6 @@
 " QFGrep  : a vim plugin to filter Quickfix entries
 " Author  : Kai Yuan <kent.yuan@gmail.com>
-" Version : 1.0.0
+" Version : 1.0.1
 " License: {{{
 "Copyright (c) 2013 Kai Yuan
 "Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -50,7 +50,7 @@ endif
 let s:msgHead = '[QFGrep] ' 
 
 "do grep on quickfix entries
-function! <SID>GrepQuickFix(dofilter)
+function! <SID>GrepQuickFix(invert)
   "store original quickfix lists, so that later could be restored
   let g:origQF = len( g:origQF )>0? g:origQF : getqflist()
   let all = getqflist()
@@ -61,7 +61,7 @@ function! <SID>GrepQuickFix(dofilter)
   let cp = deepcopy(all)
   call inputsave()
   echohl QFGPrompt
-  let pat = input( s:msgHead . 'Pattern:')
+  let pat = input( s:msgHead . 'Pattern' . (a:invert?' (Invert-matching):':':'))
   echohl None
   call inputrestore()
   "clear the cmdline
@@ -72,8 +72,14 @@ function! <SID>GrepQuickFix(dofilter)
   endif
   try
     for d in cp
-      if (a:dofilter && bufname(d['bufnr']) !~ pat && d['text'] !~ pat) || (a:dofilter == 0 && (bufname(d['bufnr']) =~ pat || d['text'] =~ pat))
-        call remove(cp, index(cp,d))
+      if (!a:invert)
+        if ( bufname(d['bufnr']) !~ pat && d['text'] !~ pat)
+          call remove(cp, index(cp,d))
+        endif
+      else " here do invert matching
+        if (bufname(d['bufnr']) =~ pat || d['text'] =~ pat)
+          call remove(cp, index(cp,d))
+        endif
       endif
     endfor
     if empty(cp)
@@ -119,8 +125,8 @@ fun! <SID>FTautocmdBatch()
   execute 'hi QFGPrompt '. g:QFG_hi_prompt
   execute 'hi QFGInfo '. g:QFG_hi_info
   execute 'hi QFGError '. g:QFG_hi_error
-  command! QFGrep call <SID>GrepQuickFix(1)
-  command! QFGrepV call <SID>GrepQuickFix(0)
+  command! QFGrep call <SID>GrepQuickFix(0)  "invert flag =0
+  command! QFGrepV call <SID>GrepQuickFix(1) "invert flag =1
   command! QFRestore call <SID>RestoreQuickFix()
   "mapping
   execute 'nnoremap <buffer><silent>' . g:QFG_Grep . ' :QFGrep<cr>'
@@ -133,7 +139,7 @@ augroup QFG
   autocmd QuickFixCmdPre * let g:origQF = []
   autocmd QuickFixCmdPost * let g:origQF = getqflist() 
   autocmd FileType qf call <SID>FTautocmdBatch()
-augroup end
+  augroup end
 
 
-   " vim:ts=2:tw=80:shiftwidth=2:tabstop=2:fdm=marker:expandtab
+    " vim:ts=2:tw=80:shiftwidth=2:tabstop=2:fdm=marker:expandtab

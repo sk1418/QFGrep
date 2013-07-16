@@ -29,7 +29,8 @@ let g:loaded_GrepQF = 1
 let g:origQF =  !exists("g:origQF")? [] : g:origQF
 
 "mappings
-let g:QFG_Grep = !exists('g:QFG_Grep')? '<Leader>g' : g:QFG_Grep
+let g:QFG_Grep    = !exists('g:QFG_Grep')? '<Leader>g' : g:QFG_Grep
+let g:QFG_GrepV   = !exists('g:QFG_GrepV')? '<Leader>v' : g:QFG_GrepV
 let g:QFG_Restore = !exists('g:QFG_Restore')? '<Leader>r' : g:QFG_Restore
 
 "highlighting
@@ -49,7 +50,7 @@ endif
 let s:msgHead = '[QFGrep] ' 
 
 "do grep on quickfix entries
-function! <SID>GrepQuickFix()
+function! <SID>GrepQuickFix(dofilter)
   "store original quickfix lists, so that later could be restored
   let g:origQF = len( g:origQF )>0? g:origQF : getqflist()
   let all = getqflist()
@@ -71,7 +72,7 @@ function! <SID>GrepQuickFix()
   endif
   try
     for d in cp
-      if bufname(d['bufnr']) !~ pat && d['text'] !~ pat
+      if (a:dofilter && bufname(d['bufnr']) !~ pat && d['text'] !~ pat) || (a:dofilter == 0 && (bufname(d['bufnr']) =~ pat || d['text'] =~ pat))
         call remove(cp, index(cp,d))
       endif
     endfor
@@ -118,10 +119,12 @@ fun! <SID>FTautocmdBatch()
   execute 'hi QFGPrompt '. g:QFG_hi_prompt
   execute 'hi QFGInfo '. g:QFG_hi_info
   execute 'hi QFGError '. g:QFG_hi_error
-  command! QFGrep call <SID>GrepQuickFix()
+  command! QFGrep call <SID>GrepQuickFix(1)
+  command! QFGrepV call <SID>GrepQuickFix(0)
   command! QFRestore call <SID>RestoreQuickFix()
   "mapping
   execute 'nnoremap <buffer><silent>' . g:QFG_Grep . ' :QFGrep<cr>'
+  execute 'nnoremap <buffer><silent>' . g:QFG_GrepV . ' :QFGrepV<cr>'
   execute 'nnoremap <buffer><silent>' . g:QFG_Restore . ' :QFRestore<cr>'
 endf
 

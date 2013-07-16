@@ -37,15 +37,19 @@ right file right line quickly. At any time you could restore the original
 |QFGrep| commands and mappings work only in |Quickfix| buffer.
 
 <Leader>g to filter entries (user will be asked for pattern)
+<Leader>v to inverted filter entries (like grep -v)
 <Leader>r to restore original quickfix entires.
 
 The above mapping could be customized. see |QFGrep-mapping|
 
                                                              *QFGrep-commands*
-|QFGrep| has two main commands:
+|QFGrep| has three main commands:
 
 QFGrep
 		do filtering on current Quickfix
+
+QFGrepV
+		do inverted filtering on current Quickfix
 
 QFRestore
 		retore original Quickfix entries
@@ -62,7 +66,13 @@ g:QFG_Grep                                                        *g:QFG_Grep*
 		e.g. let g:QFG_Grep = '<leader>qfg'
 		Default mapping is:
 		<Leader>g
-		
+
+g:QFG_GrepV                                                       *g:QFG_Grep*
+		this variable defines the keymapping for QFGrepV command.
+		e.g. let g:QFG_GrepV = '<leader>qfg'
+		Default mapping is:
+		<Leader>g
+
 g:QFG_Restore                                                  *g:QFG_Restore*
 		this variable defines the keymapping fo QFRestore command.
 		e.g. let g:QFG_Restore = '<leader>re'

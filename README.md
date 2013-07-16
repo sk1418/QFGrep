@@ -21,6 +21,7 @@ The QFGrep plugin would be helpful when you got a lot of entries in Quickfix.  F
 ##Usage
 - fill Quickfix window with some entries (grep, vimgrep, ack or make),move curosr to quickfix buffer
 - `<Leader>g` input pattern to do further filtering
+- `<Leader>v` input pattern to do further inverted filtering (like grep -v)
 - `<Leader>r` restore the Quickfix with original entries
 - check the GIF animation below
 

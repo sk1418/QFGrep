@@ -71,12 +71,12 @@ g:QFG_GrepV                                                       *g:QFG_Grep*
 		this variable defines the keymapping for QFGrepV command.
 		e.g. let g:QFG_GrepV = '<leader>qfg'
 		Default mapping is:
-		<Leader>g
+		<Leader>v
 
 g:QFG_Restore                                                  *g:QFG_Restore*
 		this variable defines the keymapping fo QFRestore command.
 		e.g. let g:QFG_Restore = '<leader>re'
-		Default mapping si:
+		Default mapping is:
 		<Leader>r
                                                             *QFGrep-highlight*
 QFGrep highlighting could be customized by three variables. The syntax must be

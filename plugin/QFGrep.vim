@@ -24,7 +24,7 @@ if exists("g:loaded_QFGrep") || &cp
   finish
 endif
 
-let g:loaded_GrepQF = 1
+let g:loaded_QFGrep = 1
 
 let g:origQF =  !exists("g:origQF")? [] : g:origQF
 

@@ -67,9 +67,9 @@ g:QFG_Grep                                                        *g:QFG_Grep*
 		Default mapping is:
 		<Leader>g
 
-g:QFG_GrepV                                                       *g:QFG_Grep*
+g:QFG_GrepV                                                       *g:QFG_GrepV*
 		this variable defines the keymapping for QFGrepV command.
-		e.g. let g:QFG_GrepV = '<leader>qfg'
+		e.g. let g:QFG_GrepV = '<leader>qfv'
 		Default mapping is:
 		<Leader>v
 

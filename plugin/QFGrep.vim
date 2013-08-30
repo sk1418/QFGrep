@@ -23,7 +23,7 @@ if exists("g:loaded_QFGrep") || &cp
   finish
 endif
 
-let s:version       = "1.1.0"
+let s:version       = "1.0.2"
 
 let g:loaded_QFGrep = 1
 
@@ -140,22 +140,29 @@ fun! PrintHLInfo(msg)
   echohl None
 endf
 
+"check the current buffer is quickfix list or location list
+"return 1 if qf-list, 0 for location list
+fun! <SID>WhichListIAmIn()
+" FIXME hardcoded 1
+  let b:isQF = 1
+endf
+
 "autocommands 
 fun! <SID>FTautocmdBatch()
-  execute 'hi QFGPrompt '. g:QFG_hi_prompt
-  execute 'hi QFGInfo '. g:QFG_hi_info
-  execute 'hi QFGError '. g:QFG_hi_error
-  command! QFGrep call <SID>GrepQuickFix(0)  "invert flag =0
-  command! QFGrepV call <SID>GrepQuickFix(1) "invert flag =1
+  execute 'hi QFGPrompt ' . g:QFG_hi_prompt
+  execute 'hi QFGInfo '   . g:QFG_hi_info
+  execute 'hi QFGError '  . g:QFG_hi_error
+  command! QFGrep    call <SID>GrepQuickFix(0)  "invert flag =0
+  command! QFGrepV   call <SID>GrepQuickFix(1)  "invert flag =1
   command! QFRestore call <SID>RestoreQuickFix()
   command! QFGrepVersion echo "QFGrep Version: " . s:version
   "mapping
-  execute 'nnoremap <buffer><silent>' . g:QFG_Grep . ' :QFGrep<cr>'
-  execute 'nnoremap <buffer><silent>' . g:QFG_GrepV . ' :QFGrepV<cr>'
+  execute 'nnoremap <buffer><silent>' . g:QFG_Grep    . ' :QFGrep<cr>'
+  execute 'nnoremap <buffer><silent>' . g:QFG_GrepV   . ' :QFGrepV<cr>'
   execute 'nnoremap <buffer><silent>' . g:QFG_Restore . ' :QFRestore<cr>'
 
   "decide it is quickfix list or location list
-  "TODO
+  call <SID>WhichListIAmIn()
 endf
 
 

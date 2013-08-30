@@ -38,6 +38,13 @@ if !exists('g:QFG_hi_prompt')
   let g:QFG_hi_prompt='ctermbg=68 ctermfg=16 guibg=#5f87d7 guifg=black'
 endif
 
+"a buffer variable, to store a flag, if current buffer is :
+"quickfix_list (1) (default)
+"location_list(0)
+" This variable must be set when the buffer loaded
+let b:isQF = 1
+
+
 if !exists('g:QFG_hi_info')
   let g:QFG_hi_info = 'ctermbg=113 ctermfg=16 guibg=#87d75f guifg=black'
 endif
@@ -48,6 +55,18 @@ endif
 
 "the message header
 let s:msgHead = '[QFGrep] ' 
+
+
+"Abstract the getqflist() or getloclist(nr)
+function! <SID>GetList()
+      return b:isQF ? getqflist():getloclist(0)
+endfunction
+
+
+"Abstract the setqflist() or setloclist(nr)
+function! <SID>SetList(qlist)
+      return b:isQF ? setqflist(a:qlist):setloclist(0,a:qlist)
+endfunction
 
 "do grep on quickfix entries
 function! <SID>GrepQuickFix(invert)
@@ -132,14 +151,19 @@ fun! <SID>FTautocmdBatch()
   execute 'nnoremap <buffer><silent>' . g:QFG_Grep . ' :QFGrep<cr>'
   execute 'nnoremap <buffer><silent>' . g:QFG_GrepV . ' :QFGrepV<cr>'
   execute 'nnoremap <buffer><silent>' . g:QFG_Restore . ' :QFRestore<cr>'
+
+  "decide it is quickfix list or location list
+  "TODO
 endf
+
+
 
 augroup QFG
   au!
   autocmd QuickFixCmdPre * let g:origQF = []
   autocmd QuickFixCmdPost * let g:origQF = getqflist() 
   autocmd FileType qf call <SID>FTautocmdBatch()
-  augroup end
+augroup end
 
 
-    " vim:ts=2:tw=80:shiftwidth=2:tabstop=2:fdm=marker:expandtab
+" vim: ts=2:tw=80:shiftwidth=2:tabstop=2:fdm=marker:expandtab:

@@ -1,6 +1,5 @@
 " QFGrep  : a vim plugin to filter Quickfix entries
 " Author  : Kai Yuan <kent.yuan@gmail.com>
-" Version : 1.0.1
 " License: {{{
 "Copyright (c) 2013 Kai Yuan
 "Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -24,14 +23,16 @@ if exists("g:loaded_QFGrep") || &cp
   finish
 endif
 
+let s:version       = "1.1.0"
+
 let g:loaded_QFGrep = 1
 
-let g:origQF =  !exists("g:origQF")? [] : g:origQF
+let g:origQF        = !exists("g:origQF")? [] : g:origQF
 
 "mappings
-let g:QFG_Grep    = !exists('g:QFG_Grep')? '<Leader>g' : g:QFG_Grep
-let g:QFG_GrepV   = !exists('g:QFG_GrepV')? '<Leader>v' : g:QFG_GrepV
-let g:QFG_Restore = !exists('g:QFG_Restore')? '<Leader>r' : g:QFG_Restore
+let g:QFG_Grep      = !exists('g:QFG_Grep')? '<Leader>g' : g:QFG_Grep
+let g:QFG_GrepV     = !exists('g:QFG_GrepV')? '<Leader>v' : g:QFG_GrepV
+let g:QFG_Restore   = !exists('g:QFG_Restore')? '<Leader>r' : g:QFG_Restore
 
 "highlighting
 if !exists('g:QFG_hi_prompt')
@@ -147,6 +148,7 @@ fun! <SID>FTautocmdBatch()
   command! QFGrep call <SID>GrepQuickFix(0)  "invert flag =0
   command! QFGrepV call <SID>GrepQuickFix(1) "invert flag =1
   command! QFRestore call <SID>RestoreQuickFix()
+  command! QFGrepVersion echo "QFGrep Version: " . s:version
   "mapping
   execute 'nnoremap <buffer><silent>' . g:QFG_Grep . ' :QFGrep<cr>'
   execute 'nnoremap <buffer><silent>' . g:QFG_GrepV . ' :QFGrepV<cr>'

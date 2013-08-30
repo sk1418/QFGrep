@@ -42,17 +42,20 @@ right file right line quickly. At any time you could restore the original
 
 The above mapping could be customized. see |QFGrep-mapping|
 
-                                                             *QFGrep-commands*
-|QFGrep| has three main commands:
+                                *:QFGrepV* *:QFRestore* *:QFGrep* *QFGrep-commands*
+|QFGrep| has four main commands:
 
-QFGrep
+:QFGrep
 		do filtering on current Quickfix
 
-QFGrepV
+:QFGrepV
 		do inverted filtering on current Quickfix
 
-QFRestore
+:QFRestore
 		retore original Quickfix entries
+
+:QFGrepVersion
+    display the version of the QFGrep plugin
 
 ==============================================================================
 3. CONFIGURATION                                       *QFGrep-configuration*
@@ -62,21 +65,24 @@ There are only two mappings in QFG-Grep, they could be customized by setting
 value to predefined variables.
 
 g:QFG_Grep                                                        *g:QFG_Grep* 
-		this variable defines the keymapping for QFGrep command. 
-		e.g. let g:QFG_Grep = '<leader>qfg'
-		Default mapping is:
+    this variable defines the keymapping for *:QFGrep* command. 
+		e.g. >
+    let g:QFG_Grep = '<leader>qfg'
+< Default mapping is:
 		<Leader>g
 
 g:QFG_GrepV                                                       *g:QFG_GrepV*
-		this variable defines the keymapping for QFGrepV command.
-		e.g. let g:QFG_GrepV = '<leader>qfv'
-		Default mapping is:
+		this variable defines the keymapping for *:QFGrepV* command.
+		e.g. >
+    let g:QFG_GrepV = '<leader>qfv'
+<		Default mapping is:
 		<Leader>v
 
 g:QFG_Restore                                                  *g:QFG_Restore*
-		this variable defines the keymapping fo QFRestore command.
-		e.g. let g:QFG_Restore = '<leader>re'
-		Default mapping is:
+		this variable defines the keymapping fo *:QFRestore* command.
+		e.g. >
+    let g:QFG_Restore = '<leader>re'
+<		Default mapping is:
 		<Leader>r
                                                             *QFGrep-highlight*
 QFGrep highlighting could be customized by three variables. The syntax must be
@@ -95,4 +101,4 @@ g:QFG_hi_error
 		let g:QFG_hi_error = 'ctermbg=167 ctermfg=16 guibg=#d75f5f guifg=black'
 
 
-" vim:ft=help:ts=2:tw=80:shiftwidth=2:tabstop=2:fdm=marker:expandtab
+" vim: ft=help:ts=2:tw=80:shiftwidth=2:fdm=marker:expandtab:

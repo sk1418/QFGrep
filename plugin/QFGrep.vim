@@ -27,7 +27,7 @@ let s:version       = "1.0.2"
 
 let g:loaded_QFGrep = 1
 
-let g:origQF        = !exists("g:origQF")? [] : g:origQF
+let s:origQF        = !exists("s:origQF")? [] : s:origQF
 
 "mappings
 let g:QFG_Grep      = !exists('g:QFG_Grep')? '<Leader>g' : g:QFG_Grep
@@ -61,7 +61,7 @@ let s:msgHead = '[QFGrep] '
 "do grep on quickfix entries
 function! <SID>GrepQuickFix(invert)
   "store original quickfix lists, so that later could be restored
-  let g:origQF = len( g:origQF )>0? g:origQF : getqflist()
+  let s:origQF = len( s:origQF )>0? s:origQF : getqflist()
   let all = getqflist()
   if empty(all)
     call PrintErrMsg('Quickfix window is empty. Nothing could be grepped. ')
@@ -105,8 +105,8 @@ endfunction
 
 
 fun! <SID>RestoreQuickFix()
-  if len(g:origQF) > 0
-    call setqflist(g:origQF)
+  if len(s:origQF) > 0
+    call setqflist(s:origQF)
     call PrintHLInfo('Quickfix entries restored.')
   else
     call PrintErrMsg("Nothing can be restored")
@@ -149,8 +149,8 @@ endf
 
 augroup QFG
   au!
-  autocmd QuickFixCmdPre * let g:origQF = []
-  autocmd QuickFixCmdPost * let g:origQF = getqflist() 
+  autocmd QuickFixCmdPre * let s:origQF = []
+  autocmd QuickFixCmdPost * let s:origQF = getqflist() 
   autocmd FileType qf call <SID>FTautocmdBatch()
 augroup end
 

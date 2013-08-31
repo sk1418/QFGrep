@@ -58,17 +58,6 @@ endif
 let s:msgHead = '[QFGrep] ' 
 
 
-"Abstract the getqflist() or getloclist(nr)
-function! <SID>GetList()
-      return b:isQF ? getqflist():getloclist(0)
-endfunction
-
-
-"Abstract the setqflist() or setloclist(nr)
-function! <SID>SetList(qlist)
-      return b:isQF ? setqflist(a:qlist):setloclist(0,a:qlist)
-endfunction
-
 "do grep on quickfix entries
 function! <SID>GrepQuickFix(invert)
   "store original quickfix lists, so that later could be restored
@@ -140,12 +129,6 @@ fun! PrintHLInfo(msg)
   echohl None
 endf
 
-"check the current buffer is quickfix list or location list
-"return 1 if qf-list, 0 for location list
-fun! <SID>WhichListIAmIn()
-" FIXME hardcoded 1
-  let b:isQF = 1
-endf
 
 "autocommands 
 fun! <SID>FTautocmdBatch()
@@ -155,14 +138,11 @@ fun! <SID>FTautocmdBatch()
   command! QFGrep    call <SID>GrepQuickFix(0)  "invert flag =0
   command! QFGrepV   call <SID>GrepQuickFix(1)  "invert flag =1
   command! QFRestore call <SID>RestoreQuickFix()
-  command! QFGrepVersion echo "QFGrep Version: " . s:version
   "mapping
   execute 'nnoremap <buffer><silent>' . g:QFG_Grep    . ' :QFGrep<cr>'
   execute 'nnoremap <buffer><silent>' . g:QFG_GrepV   . ' :QFGrepV<cr>'
   execute 'nnoremap <buffer><silent>' . g:QFG_Restore . ' :QFRestore<cr>'
 
-  "decide it is quickfix list or location list
-  call <SID>WhichListIAmIn()
 endf
 
 
@@ -174,5 +154,6 @@ augroup QFG
   autocmd FileType qf call <SID>FTautocmdBatch()
 augroup end
 
+command! QFGrepVersion echo "QFGrep Version: " . s:version
 
 " vim: ts=2:tw=80:shiftwidth=2:tabstop=2:fdm=marker:expandtab:

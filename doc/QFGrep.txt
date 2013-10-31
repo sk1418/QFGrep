@@ -14,12 +14,13 @@ This plugin requires Vim 7.3 or later.
 ==============================================================================
 Help on using QFGrep
 
-1. Introduction .......................... |QFGrep-intro|
-2. Usage ................................. |QFGrep-usage|
-3. Configuration ......................... |QFGrep-configuration|
+  1. Introduction .......................... |QFGrep-intro|
+  2. Usage ................................. |QFGrep-usage|
+  3. Configuration ......................... |QFGrep-configuration|
+  4. ChangeLog ............................. |QFGrep-changelog|
 
 ==============================================================================
-1. INTRODUCTION                                                *QFGrep-intro*
+INTRODUCTION                                                     *QFGrep-intro*
 
 The |QFGrep| plugin would be helpful when you got a lot of entries in |Quickfix|.
 For example, you did an Ack/Grep with a not strict criteria. |QFGrep| can do
@@ -31,7 +32,7 @@ right file right line quickly. At any time you could restore the original
 
 
 ==============================================================================
-2. USAGE                                                       *QFGrep-usage*
+USAGE                                                            *QFGrep-usage*
 
 
 |QFGrep| commands and mappings work only in |Quickfix| buffer.
@@ -42,7 +43,7 @@ right file right line quickly. At any time you could restore the original
 
 The above mapping could be customized. see |QFGrep-mapping|
 
-                                *:QFGrepV* *:QFRestore* *:QFGrep* *QFGrep-commands*
+                                  *:QFGrepV* *:QFRestore* *:QFGrep* *QFGrep-commands*
 |QFGrep| has four main commands:
 
 :QFGrep
@@ -58,9 +59,9 @@ The above mapping could be customized. see |QFGrep-mapping|
     display the version of the QFGrep plugin
 
 ==============================================================================
-3. CONFIGURATION                                       *QFGrep-configuration*
+CONFIGURATION                                            *QFGrep-configuration*
 
-                                                              *QFGrep-mapping*
+                                                                *QFGrep-mapping*
 There are only two mappings in QFG-Grep, they could be customized by setting
 value to predefined variables.
 
@@ -100,5 +101,18 @@ g:QFG_hi_error
 		Defines the color highlighting of error message. Default is:
 		let g:QFG_hi_error = 'ctermbg=167 ctermfg=16 guibg=#d75f5f guifg=black'
 
+==============================================================================
+CHANGELOG                                                    *QFGrep-changelog*
+
+version 1.0.2                2013-08-30~
+    - add :QFGrepVersion command to print version info
+    - loaded_QFGrep had a typo! fixed
+
+version 1.0.1                2013-07-16~
+    - add the invert-match, like grep -v (pull request from jsnelling)
+    - typo fixes in doc/readme
+
+version 1.0.0                2013-03-28~
+    - first release
 
 " vim: ft=help:ts=2:tw=80:shiftwidth=2:fdm=marker:expandtab:

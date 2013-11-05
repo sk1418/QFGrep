@@ -57,12 +57,12 @@ function! QFGrep#fill_origQF()
 endfunction
 
 "do grep on quickfix entries
-function! QFGrep#GrepQuickFix(invert)
+function! QFGrep#grep_QuickFix(invert)
   "store original quickfix lists, so that later could be restored
   let s:origQF = len( s:origQF )>0? s:origQF : getqflist()
   let all = getqflist()
   if empty(all)
-    call QFGrep#PrintErrMsg('Quickfix window is empty. Nothing could be grepped. ')
+    call QFGrep#print_err_msg('Quickfix window is empty. Nothing could be grepped. ')
     return
   endif
   let cp = deepcopy(all)
@@ -74,7 +74,7 @@ function! QFGrep#GrepQuickFix(invert)
   "clear the cmdline
   exec 'redraw' 
   if empty(pat)
-    call QFGrep#PrintErrMsg("Empty pattern is not allowed")
+    call QFGrep#print_err_msg("Empty pattern is not allowed")
     return
   endif
   try
@@ -90,41 +90,40 @@ function! QFGrep#GrepQuickFix(invert)
       endif
     endfor
     if empty(cp)
-      call QFGrep#PrintErrMsg('Empty resultset, aborted.')
+      call QFGrep#print_err_msg('Empty resultset, aborted.')
     else		"found entries
       call setqflist(cp)
-      call QFGrep#PrintHLInfo(len(cp) . ' entries in Grep result.')
+      call QFGrep#print_HLInfo(len(cp) . ' entries in Grep result.')
     endif
   catch /^Vim\%((\a\+)\)\=:E/
-    call QFGrep#PrintErrMsg('Pattern invalid')
+    call QFGrep#print_err_msg('Pattern invalid')
   endtry
 
 endfunction
 
 
-fun! QFGrep#RestoreQuickFix()
+function! QFGrep#restore_QuickFix()
   if len(s:origQF) > 0
     call setqflist(s:origQF)
-    call QFGrep#PrintHLInfo('Quickfix entries restored.')
+    call QFGrep#print_HLInfo('Quickfix entries restored.')
   else
-    call QFGrep#PrintErrMsg("Nothing can be restored")
+    call QFGrep#print_err_msg("Nothing can be restored")
   endif
+endfunction
 
-endf
 
-
-fun! QFGrep#PrintErrMsg(errMsg)
+function! QFGrep#print_err_msg(errMsg)
   echohl QFGError
   echon s:msgHead . a:errMsg
   echohl None
-endf
+endfunction
 
 
 "print Highlighted info
-fun! QFGrep#PrintHLInfo(msg)
+function! QFGrep#print_HLInfo(msg)
   echohl QFGInfo
   echon s:msgHead .  a:msg
   echohl None
-endf
+endfunction
 
 " vim: ts=2:tw=80:shiftwidth=2:tabstop=2:fdm=marker:expandtab:

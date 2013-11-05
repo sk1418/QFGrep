@@ -35,9 +35,9 @@ let g:QFG_Restore   = !exists('g:QFG_Restore')? '<Leader>r' : g:QFG_Restore
 
 "autocommands 
 function! <SID>FTautocmdBatch()
-  command! QFGrep    call QFGrep#GrepQuickFix(0)  "invert flag =0
-  command! QFGrepV   call QFGrep#GrepQuickFix(1)  "invert flag =1
-  command! QFRestore call QFGrep#RestoreQuickFix()
+  command! QFGrep    call QFGrep#grep_QuickFix(0)  "invert flag =0
+  command! QFGrepV   call QFGrep#grep_QuickFix(1)  "invert flag =1
+  command! QFRestore call QFGrep#restore_QuickFix()
   "mapping
   execute 'nnoremap <buffer><silent>' . g:QFG_Grep    . ' :QFGrep<cr>'
   execute 'nnoremap <buffer><silent>' . g:QFG_GrepV   . ' :QFGrepV<cr>'

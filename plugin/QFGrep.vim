@@ -23,11 +23,9 @@ if exists("g:loaded_QFGrep") || &cp
   finish
 endif
 
-let s:version       = "1.0.2"
+let s:version       = "1.0.3"
 
 let g:loaded_QFGrep = 1
-
-let s:origQF        = !exists("s:origQF")? [] : s:origQF
 
 "mappings
 let g:QFG_Grep      = !exists('g:QFG_Grep')? '<Leader>g' : g:QFG_Grep
@@ -39,12 +37,6 @@ if !exists('g:QFG_hi_prompt')
   let g:QFG_hi_prompt='ctermbg=68 ctermfg=16 guibg=#5f87d7 guifg=black'
 endif
 
-"a buffer variable, to store a flag, if current buffer is :
-"quickfix_list (1) (default)
-"location_list(0)
-" This variable must be set when the buffer loaded
-let b:isQF = 1
-
 
 if !exists('g:QFG_hi_info')
   let g:QFG_hi_info = 'ctermbg=113 ctermfg=16 guibg=#87d75f guifg=black'
@@ -54,96 +46,22 @@ if !exists('g:QFG_hi_error')
   let g:QFG_hi_error = 'ctermbg=167 ctermfg=16 guibg=#d75f5f guifg=black'
 endif
 
-"the message header
-let s:msgHead = '[QFGrep] ' 
-
-
-"do grep on quickfix entries
-function! <SID>GrepQuickFix(invert)
-  "store original quickfix lists, so that later could be restored
-  let s:origQF = len( s:origQF )>0? s:origQF : getqflist()
-  let all = getqflist()
-  if empty(all)
-    call PrintErrMsg('Quickfix window is empty. Nothing could be grepped. ')
-    return
-  endif
-  let cp = deepcopy(all)
-  call inputsave()
-  echohl QFGPrompt
-  let pat = input( s:msgHead . 'Pattern' . (a:invert?' (Invert-matching):':':'))
-  echohl None
-  call inputrestore()
-  "clear the cmdline
-  exec 'redraw' 
-  if empty(pat)
-    call PrintErrMsg("Empty pattern is not allowed")
-    return
-  endif
-  try
-    for d in cp
-      if (!a:invert)
-        if ( bufname(d['bufnr']) !~ pat && d['text'] !~ pat)
-          call remove(cp, index(cp,d))
-        endif
-      else " here do invert matching
-        if (bufname(d['bufnr']) =~ pat || d['text'] =~ pat)
-          call remove(cp, index(cp,d))
-        endif
-      endif
-    endfor
-    if empty(cp)
-      call PrintErrMsg('Empty resultset, aborted.')
-    else		"found entries
-      call setqflist(cp)
-      call PrintHLInfo(len(cp) . ' entries in Grep result.')
-    endif
-  catch /^Vim\%((\a\+)\)\=:E/
-    call PrintErrMsg('Pattern invalid')
-  endtry
-
-endfunction
-
-
-fun! <SID>RestoreQuickFix()
-  if len(s:origQF) > 0
-    call setqflist(s:origQF)
-    call PrintHLInfo('Quickfix entries restored.')
-  else
-    call PrintErrMsg("Nothing can be restored")
-  endif
-
-endf
-
-
-fun! PrintErrMsg(errMsg)
-  echohl QFGError
-  echon s:msgHead.a:errMsg
-  echohl None
-endf
-
-
-"print Highlighted info
-fun! PrintHLInfo(msg)
-  echohl QFGInfo
-  echon s:msgHead.a:msg
-  echohl None
-endf
 
 
 "autocommands 
-fun! <SID>FTautocmdBatch()
+function! <SID>FTautocmdBatch()
   execute 'hi QFGPrompt ' . g:QFG_hi_prompt
   execute 'hi QFGInfo '   . g:QFG_hi_info
   execute 'hi QFGError '  . g:QFG_hi_error
-  command! QFGrep    call <SID>GrepQuickFix(0)  "invert flag =0
-  command! QFGrepV   call <SID>GrepQuickFix(1)  "invert flag =1
-  command! QFRestore call <SID>RestoreQuickFix()
+  command! QFGrep    call QFGrep#GrepQuickFix(0)  "invert flag =0
+  command! QFGrepV   call QFGrep#GrepQuickFix(1)  "invert flag =1
+  command! QFRestore call QFGrep#RestoreQuickFix()
   "mapping
   execute 'nnoremap <buffer><silent>' . g:QFG_Grep    . ' :QFGrep<cr>'
   execute 'nnoremap <buffer><silent>' . g:QFG_GrepV   . ' :QFGrepV<cr>'
   execute 'nnoremap <buffer><silent>' . g:QFG_Restore . ' :QFRestore<cr>'
 
-endf
+endfunction
 
 
 

@@ -28,11 +28,11 @@ let s:origQF        = !exists("s:origQF")? [] : s:origQF
 "the message header
 let s:msgHead = '[QFGrep] ' 
 
-"read user's highlighting setting
+"read user's highlighting setting, and define highlighting groups
+""{{{
 if !exists('g:QFG_hi_prompt')
   let g:QFG_hi_prompt='ctermbg=68 ctermfg=16 guibg=#5f87d7 guifg=black'
 endif
-
 
 if !exists('g:QFG_hi_info')
   let g:QFG_hi_info = 'ctermbg=113 ctermfg=16 guibg=#87d75f guifg=black'
@@ -46,17 +46,20 @@ execute 'hi QFGPrompt ' . g:QFG_hi_prompt
 execute 'hi QFGInfo '   . g:QFG_hi_info
 execute 'hi QFGError '  . g:QFG_hi_error
 
+"}}}
 
-
+"invoked by autocmd
 function! QFGrep#init_origQF()
   let s:origQF = []
 endfunction
 
+"invoked by autocmd
 function! QFGrep#fill_origQF()
   let s:origQF = getqflist()
 endfunction
 
 "do grep on quickfix entries
+"if argument invert is 1, do invert match like grep -v
 function! QFGrep#grep_QuickFix(invert)
   "store original quickfix lists, so that later could be restored
   let s:origQF = len( s:origQF )>0? s:origQF : getqflist()
@@ -101,7 +104,7 @@ function! QFGrep#grep_QuickFix(invert)
 
 endfunction
 
-
+"restore quickfix items since last qf command
 function! QFGrep#restore_QuickFix()
   if len(s:origQF) > 0
     call setqflist(s:origQF)
@@ -112,6 +115,7 @@ function! QFGrep#restore_QuickFix()
 endfunction
 
 
+"print err message in err highlighting
 function! QFGrep#print_err_msg(errMsg)
   echohl QFGError
   echon s:msgHead . a:errMsg

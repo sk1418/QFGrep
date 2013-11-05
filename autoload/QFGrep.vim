@@ -28,6 +28,33 @@ let s:origQF        = !exists("s:origQF")? [] : s:origQF
 "the message header
 let s:msgHead = '[QFGrep] ' 
 
+"read user's highlighting setting
+if !exists('g:QFG_hi_prompt')
+  let g:QFG_hi_prompt='ctermbg=68 ctermfg=16 guibg=#5f87d7 guifg=black'
+endif
+
+
+if !exists('g:QFG_hi_info')
+  let g:QFG_hi_info = 'ctermbg=113 ctermfg=16 guibg=#87d75f guifg=black'
+endif
+
+if !exists('g:QFG_hi_error')
+  let g:QFG_hi_error = 'ctermbg=167 ctermfg=16 guibg=#d75f5f guifg=black'
+endif
+
+execute 'hi QFGPrompt ' . g:QFG_hi_prompt
+execute 'hi QFGInfo '   . g:QFG_hi_info
+execute 'hi QFGError '  . g:QFG_hi_error
+
+
+
+function! QFGrep#init_origQF()
+  let s:origQF = []
+endfunction
+
+function! QFGrep#fill_origQF()
+  let s:origQF = getqflist()
+endfunction
 
 "do grep on quickfix entries
 function! QFGrep#GrepQuickFix(invert)

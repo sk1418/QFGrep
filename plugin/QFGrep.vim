@@ -32,27 +32,9 @@ let g:QFG_Grep      = !exists('g:QFG_Grep')? '<Leader>g' : g:QFG_Grep
 let g:QFG_GrepV     = !exists('g:QFG_GrepV')? '<Leader>v' : g:QFG_GrepV
 let g:QFG_Restore   = !exists('g:QFG_Restore')? '<Leader>r' : g:QFG_Restore
 
-"highlighting
-if !exists('g:QFG_hi_prompt')
-  let g:QFG_hi_prompt='ctermbg=68 ctermfg=16 guibg=#5f87d7 guifg=black'
-endif
-
-
-if !exists('g:QFG_hi_info')
-  let g:QFG_hi_info = 'ctermbg=113 ctermfg=16 guibg=#87d75f guifg=black'
-endif
-
-if !exists('g:QFG_hi_error')
-  let g:QFG_hi_error = 'ctermbg=167 ctermfg=16 guibg=#d75f5f guifg=black'
-endif
-
-
 
 "autocommands 
 function! <SID>FTautocmdBatch()
-  execute 'hi QFGPrompt ' . g:QFG_hi_prompt
-  execute 'hi QFGInfo '   . g:QFG_hi_info
-  execute 'hi QFGError '  . g:QFG_hi_error
   command! QFGrep    call QFGrep#GrepQuickFix(0)  "invert flag =0
   command! QFGrepV   call QFGrep#GrepQuickFix(1)  "invert flag =1
   command! QFRestore call QFGrep#RestoreQuickFix()
@@ -67,8 +49,8 @@ endfunction
 
 augroup QFG
   au!
-  autocmd QuickFixCmdPre * let s:origQF = []
-  autocmd QuickFixCmdPost * let s:origQF = getqflist() 
+  autocmd QuickFixCmdPre * call QFGrep#init_origQF()
+  autocmd QuickFixCmdPost * call QFGrep#fill_origQF()
   autocmd FileType qf call <SID>FTautocmdBatch()
 augroup end
 

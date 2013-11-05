@@ -1,11 +1,11 @@
 *QFGrep.txt*  A plugin for filtering Quickfix entries
 
-   ____    ____________              
-  / __ \  / ____/ ____/_______  ____ 
- / / / / / /_  / / __/ ___/ _ \/ __ \
-/ /_/ / / __/ / /_/ / /  /  __/ /_/ /
-\___\_\/_/    \____/_/   \___/ .___/ 
-                            /_/      
+       ____    ____________              
+      / __ \  / ____/ ____/_______  ____ 
+     / / / / / /_  / / __/ ___/ _ \/ __ \
+    / /_/ / / __/ / /_/ / /  /  __/ /_/ /
+    \___\_\/_/    \____/_/   \___/ .___/ 
+                                /_/      
 
 Author:  Kai Yuan
 
@@ -89,21 +89,32 @@ g:QFG_Restore                                                  *g:QFG_Restore*
 QFGrep highlighting could be customized by three variables. The syntax must be
 follow vim *:highlight* command.
 
-g:QFG_hi_prompt
+*g:QFG_hi_prompt*
 		Defines the color highlighting of pattern input prompt. Default is:
+>
 		let g:QFG_hi_prompt='ctermbg=68 ctermfg=16 guibg=#5f87d7 guifg=black'
+<    
 
-g:QFG_hi_info
+*g:QFG_hi_info*
 		Defines the color highlighting of info messsage. Default is:
+>
 		let g:QFG_hi_info = 'ctermbg=113 ctermfg=16 guibg=#87d75f guifg=black'
+<
 
-g:QFG_hi_error
+*g:QFG_hi_error*
 		Defines the color highlighting of error message. Default is:
+>
 		let g:QFG_hi_error = 'ctermbg=167 ctermfg=16 guibg=#d75f5f guifg=black'
+<
 
 ==============================================================================
 CHANGELOG                                                    *QFGrep-changelog*
 
+version 1.0.3                2013-11-05~
+    - move the logic codes to autoload
+    - rename function names
+    - enhance formatting of documentation
+    
 version 1.0.2                2013-08-30~
     - add :QFGrepVersion command to print version info
     - loaded_QFGrep had a typo! fixed

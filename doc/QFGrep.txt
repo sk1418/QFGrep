@@ -66,21 +66,21 @@ There are only two mappings in QFG-Grep, they could be customized by setting
 value to predefined variables.
 
 g:QFG_Grep                                                        *g:QFG_Grep* 
-    this variable defines the keymapping for *:QFGrep* command. 
+    this variable defines the keymapping for :QFGrep command. 
 		e.g. >
     let g:QFG_Grep = '<leader>qfg'
 < Default mapping is:
 		<Leader>g
 
 g:QFG_GrepV                                                       *g:QFG_GrepV*
-		this variable defines the keymapping for *:QFGrepV* command.
+		this variable defines the keymapping for :QFGrepV command.
 		e.g. >
     let g:QFG_GrepV = '<leader>qfv'
 <		Default mapping is:
 		<Leader>v
 
 g:QFG_Restore                                                  *g:QFG_Restore*
-		this variable defines the keymapping fo *:QFRestore* command.
+		this variable defines the keymapping for :QFRestore command.
 		e.g. >
     let g:QFG_Restore = '<leader>re'
 <		Default mapping is:

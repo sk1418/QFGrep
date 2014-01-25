@@ -66,42 +66,42 @@ There are only two mappings in QFG-Grep, they could be customized by setting
 value to predefined variables.
 
 g:QFG_Grep                                                        *g:QFG_Grep* 
-    this variable defines the keymapping for :QFGrep command. 
+    this variable defines the keymapping for |:QFGrep| command. 
 		e.g. >
     let g:QFG_Grep = '<leader>qfg'
 < Default mapping is:
 		<Leader>g
 
 g:QFG_GrepV                                                       *g:QFG_GrepV*
-		this variable defines the keymapping for :QFGrepV command.
+		this variable defines the keymapping for |:QFGrepV|command.
 		e.g. >
     let g:QFG_GrepV = '<leader>qfv'
 <		Default mapping is:
 		<Leader>v
 
-g:QFG_Restore                                                  *g:QFG_Restore*
-		this variable defines the keymapping for :QFRestore command.
+g:QFG_Restore                                                   *g:QFG_Restore*
+		this variable defines the keymapping for |:QFRestore| command.
 		e.g. >
     let g:QFG_Restore = '<leader>re'
 <		Default mapping is:
 		<Leader>r
                                                             *QFGrep-highlight*
 QFGrep highlighting could be customized by three variables. The syntax must be
-follow vim *:highlight* command.
+follow vim |:highlight| command.
 
-*g:QFG_hi_prompt*
+                                                             *g:QFG_hi_prompt*
 		Defines the color highlighting of pattern input prompt. Default is:
 >
 		let g:QFG_hi_prompt='ctermbg=68 ctermfg=16 guibg=#5f87d7 guifg=black'
 <    
 
-*g:QFG_hi_info*
+                                                               *g:QFG_hi_info*
 		Defines the color highlighting of info messsage. Default is:
 >
 		let g:QFG_hi_info = 'ctermbg=113 ctermfg=16 guibg=#87d75f guifg=black'
 <
 
-*g:QFG_hi_error*
+                                                              *g:QFG_hi_error*
 		Defines the color highlighting of error message. Default is:
 >
 		let g:QFG_hi_error = 'ctermbg=167 ctermfg=16 guibg=#d75f5f guifg=black'

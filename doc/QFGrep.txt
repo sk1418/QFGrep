@@ -28,8 +28,8 @@ further filtering for you, so that you could narrow your focus and jump to the
 right file right line quickly. At any time you could restore the original
 |Quickfix| entries. 
 
-|QFGrep| will look for the given pattern in buffer name (filename) and description text.
-
+|QFGrep| will look for the given pattern in buffer name (filename) and description
+text.
 
 ==============================================================================
 USAGE                                                            *QFGrep-usage*
@@ -93,7 +93,7 @@ customized mapping
     Default mapping: <Leader>r
 
                                                             *QFGrep-highlight*
-QFGrep highlighting could be customized by three variables. The syntax must be
+QFGrep highlighting could be customized by three variables. The syntax must
 follow vim |:highlight| command.
 
                                                              *g:QFG_hi_prompt*
@@ -125,7 +125,7 @@ version 1.0.3                2013-11-05~
     - move the logic codes to autoload
     - rename function names
     - enhance formatting of documentation
-    
+
 version 1.0.2                2013-08-30~
     - add :QFGrepVersion command to print version info
     - loaded_QFGrep had a typo! fixed
@@ -137,4 +137,4 @@ version 1.0.1                2013-07-16~
 version 1.0.0                2013-03-28~
     - first release
 
-" vim: ft=help:ts=2:tw=80:shiftwidth=2:fdm=marker:expandtab:
+" vim: ft=help:ts=2:tw=78:shiftwidth=2:fdm=marker:expandtab:

@@ -23,16 +23,16 @@ if exists("g:loaded_QFGrep") || &cp
   finish
 endif
 
-let s:version       = "1.1.0"
-
 let g:loaded_QFGrep = 1
 
-"mappings
-"TODO <plug>mappings
-let g:QFG_Grep      = !exists('g:QFG_Grep')? '<Leader>g' : g:QFG_Grep
-let g:QFG_GrepV     = !exists('g:QFG_GrepV')? '<Leader>v' : g:QFG_GrepV
-let g:QFG_Restore   = !exists('g:QFG_Restore')? '<Leader>r' : g:QFG_Restore
+let s:version       = "1.1.0"
+command! QFGrepVersion echo "QFGrep Version: " . s:version
 
+
+"mappings
+nnoremap <silent><unique> <Plug>QFGrep :call QFGrep#grep_QuickFix(0)<cr>
+nnoremap <silent><unique> <Plug>QFGrepV :call QFGrep#grep_QuickFix(1)<cr>
+nnoremap <silent><unique> <Plug>QFRestore :call QFGrep#restore_QuickFix()<cr>
 
 "autocommands 
 function! <SID>FTautocmdBatch()
@@ -43,14 +43,18 @@ function! <SID>FTautocmdBatch()
   command! -nargs=1 QFGrepPat  call QFGrep#grep_QuickFix_with_pattern("<args>",0)  "invert flag =0
   command! -nargs=1 QFGrepPatV call QFGrep#grep_QuickFix_with_pattern("<args>",1)  "invert flag =1
 
-  "mapping
-  execute 'nnoremap <buffer><silent>' . g:QFG_Grep    . ' :QFGrep<cr>'
-  execute 'nnoremap <buffer><silent>' . g:QFG_GrepV   . ' :QFGrepV<cr>'
-  execute 'nnoremap <buffer><silent>' . g:QFG_Restore . ' :QFRestore<cr>'
+  "create mapping
+  if !hasmapto('<Plug>QFGrep','n')
+    nmap <buffer> <Leader>g <Plug>QFGrep
+  endif
+  if !hasmapto('<Plug>QFGrepV','n')
+    nmap <buffer> <Leader>v <Plug>QFGrepV
+  endif
+  if !hasmapto('<Plug>QFRestore')
+    nmap <buffer> <Leader>r <Plug>QFRestore
+  endif
 
 endfunction
-
-
 
 augroup QFG
   au!
@@ -59,6 +63,5 @@ augroup QFG
   autocmd FileType qf call <SID>FTautocmdBatch()
 augroup end
 
-command! QFGrepVersion echo "QFGrep Version: " . s:version
 
 " vim: ts=2:tw=80:shiftwidth=2:tabstop=2:fdm=marker:expandtab:

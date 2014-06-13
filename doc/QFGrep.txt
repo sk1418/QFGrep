@@ -44,16 +44,22 @@ USAGE                                                            *QFGrep-usage*
 The above mapping could be customized. see |QFGrep-mapping|
 
                                   *:QFGrepV* *:QFRestore* *:QFGrep* *QFGrep-commands*
-|QFGrep| has four main commands:
+|QFGrep| has following commands:
 
 :QFGrep
-		do filtering on current Quickfix
+		do filtering on current Quickfix, user input pattern interactively
+
+:QFGrepPat {pattern}
+		do filtering on current Quickfix, pattern is required as argument
 
 :QFGrepV
-		do inverted filtering on current Quickfix
+		do inverted filtering on current Quickfix, user input pattern interactively
 
 :QFRestore
 		retore original Quickfix entries
+
+:QFGrepPatV {pattern}
+		do inverted filtering on current Quickfix, pattern is required as argument
 
 :QFGrepVersion
     display the version of the QFGrep plugin
@@ -62,29 +68,30 @@ The above mapping could be customized. see |QFGrep-mapping|
 CONFIGURATION                                            *QFGrep-configuration*
 
                                                                 *QFGrep-mapping*
-There are only two mappings in QFG-Grep, they could be customized by setting
-value to predefined variables.
+There are three `<Plug>` mappings in QFGrep, to let user easily create
+customized mapping
 
-g:QFG_Grep                                                        *g:QFG_Grep* 
-    this variable defines the keymapping for |:QFGrep| command. 
-		e.g. >
-    let g:QFG_Grep = '<leader>qfg'
-< Default mapping is:
-		<Leader>g
+<Plug>QFGrep
+    mapping for |:QFGrep| command. E.g >
 
-g:QFG_GrepV                                                       *g:QFG_GrepV*
-		this variable defines the keymapping for |:QFGrepV|command.
-		e.g. >
-    let g:QFG_GrepV = '<leader>qfv'
-<		Default mapping is:
-		<Leader>v
+    nmap <buffer> {Mykeys} <Plug>QFGrep
+<
+    Default mapping: <Leader>g
 
-g:QFG_Restore                                                   *g:QFG_Restore*
-		this variable defines the keymapping for |:QFRestore| command.
-		e.g. >
-    let g:QFG_Restore = '<leader>re'
-<		Default mapping is:
-		<Leader>r
+<Plug>QFGrepV
+    mapping for |:QFGrepV| command. E.g >
+
+    nmap <buffer> {Mykeys} <Plug>QFGrepV
+<
+    Default mapping: <Leader>v
+
+<Plug>QFRestore   
+    mapping for |:QFRestore| command. E.g >
+
+    nmap <buffer> {Mykeys} <Plug>QFRestore
+<
+    Default mapping: <Leader>r
+
                                                             *QFGrep-highlight*
 QFGrep highlighting could be customized by three variables. The syntax must be
 follow vim |:highlight| command.
@@ -109,6 +116,10 @@ follow vim |:highlight| command.
 
 ==============================================================================
 CHANGELOG                                                    *QFGrep-changelog*
+
+version 1.1.0                2014-06-14~
+    - add QFGrepPat and QFGrepPatV command, by pass interactive `input()`
+    - create `<Plug>` mappings, remove global mapping variable
 
 version 1.0.3                2013-11-05~
     - move the logic codes to autoload

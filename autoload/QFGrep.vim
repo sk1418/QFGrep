@@ -1,6 +1,6 @@
 " QFGrep  : a vim plugin to filter Quickfix entries
 " Author  : Kai Yuan <kent.yuan@gmail.com>
-" License: {{{
+" License: {{{1
 "Copyright (c) 2013 Kai Yuan
 "Permission is hereby granted, free of charge, to any person obtaining a copy of
 "this software and associated documentation files (the "Software"), to deal in
@@ -18,7 +18,8 @@
 "COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 "IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 "CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-" }}}
+"
+"init variables {{{1
 if exists("g:autoloaded_QFGrep") || &cp
   finish
 endif
@@ -28,8 +29,7 @@ let s:origQF        = !exists("s:origQF")? [] : s:origQF
 "the message header
 let s:msgHead = '[QFGrep] ' 
 
-"read user's highlighting setting, and define highlighting groups
-""{{{
+"read user's highlighting setting, and define highlighting groups {{{1
 if !exists('g:QFG_hi_prompt')
   let g:QFG_hi_prompt='ctermbg=68 ctermfg=16 guibg=#5f87d7 guifg=black'
 endif
@@ -46,18 +46,37 @@ execute 'hi QFGPrompt ' . g:QFG_hi_prompt
 execute 'hi QFGInfo '   . g:QFG_hi_info
 execute 'hi QFGError '  . g:QFG_hi_error
 
-"}}}
 
-"invoked by autocmd
+"helper methods {{{1
+
+"print err message in err highlighting{{{2
+function! QFGrep#print_err_msg(errMsg)
+  echohl QFGError
+  echon s:msgHead . a:errMsg
+  echohl None
+endfunction
+
+
+"print Highlighted info {{{2
+function! QFGrep#print_HLInfo(msg)
+  echohl QFGInfo
+  echon s:msgHead .  a:msg
+  echohl None
+endfunction
+
+"invoked by autocmd: init_origQF(){{{2
 function! QFGrep#init_origQF()
   let s:origQF = []
 endfunction
 
-"invoked by autocmd
+"invoked by autocmd:fill_origQF() {{{2
 function! QFGrep#fill_origQF()
   let s:origQF = getqflist()
 endfunction
 
+"logic funtions {{{1
+
+"QFGrep#copy_QuickFix(): make a copy of current QF {{{2
 function! QFGrep#copy_QuickFix()
   "store original quickfix lists, so that later could be restored
   let s:origQF = len( s:origQF )>0? s:origQF : getqflist()
@@ -66,12 +85,11 @@ function! QFGrep#copy_QuickFix()
     call PrintErrMsg('Quickfix window is empty. Nothing could be grepped. ')
     return all
   endif
-
   return deepcopy(all)
 endfunction
 
 
-"do grep on quickfix entries
+"do_grep(): filter logic {{{2
 "if argument invert is 1, do invert match like grep -v
 function! QFGrep#do_grep(pat, invert, cp) 
   "do validation
@@ -99,6 +117,7 @@ function! QFGrep#do_grep(pat, invert, cp)
   endtry
 endfunction
 
+" grep_QuickFix(): grep QF, get pattern from userinput {{{2
 "if argument invert is 1, do invert match like grep -v
 function! QFGrep#grep_QuickFix(invert)
   "get cp of QF
@@ -118,7 +137,7 @@ function! QFGrep#grep_QuickFix(invert)
   call QFGrep#do_grep(pat, a:invert, cp)
 endfunction
 
-"do grep on quickfix with pattern as argument
+"grep_QuickFix_with_pattern(): do grep on quickfix with pattern as argument{{{2
 function! QFGrep#grep_QuickFix_with_pattern( pat, invert )
   let cp = QFGrep#copy_QuickFix()
   if empty(cp)
@@ -129,7 +148,7 @@ function! QFGrep#grep_QuickFix_with_pattern( pat, invert )
   call QFGrep#do_grep(a:pat, a:invert, cp)
 endfunction
 
-"restore quickfix items since last qf command
+"restore quickfix items since last qf command{{{2
 function! QFGrep#restore_QuickFix()
   if len(s:origQF) > 0
     call setqflist(s:origQF)
@@ -137,22 +156,6 @@ function! QFGrep#restore_QuickFix()
   else
     call QFGrep#print_err_msg("Nothing can be restored")
   endif
-endfunction
-
-
-"print err message in err highlighting
-function! QFGrep#print_err_msg(errMsg)
-  echohl QFGError
-  echon s:msgHead . a:errMsg
-  echohl None
-endfunction
-
-
-"print Highlighted info
-function! QFGrep#print_HLInfo(msg)
-  echohl QFGInfo
-  echon s:msgHead .  a:msg
-  echohl None
 endfunction
 
 " vim: ts=2:tw=80:shiftwidth=2:tabstop=2:fdm=marker:expandtab:

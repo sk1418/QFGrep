@@ -58,17 +58,55 @@ function! QFGrep#fill_origQF()
   let s:origQF = getqflist()
 endfunction
 
-"do grep on quickfix entries
-"if argument invert is 1, do invert match like grep -v
-function! QFGrep#grep_QuickFix(invert)
+function! QFGrep#copy_QuickFix()
   "store original quickfix lists, so that later could be restored
   let s:origQF = len( s:origQF )>0? s:origQF : getqflist()
   let all = getqflist()
   if empty(all)
+    call PrintErrMsg('Quickfix window is empty. Nothing could be grepped. ')
+    return all
+  endif
+
+  return deepcopy(all)
+endfunction
+
+
+"do grep on quickfix entries
+"if argument invert is 1, do invert match like grep -v
+function! QFGrep#do_grep(pat, invert, cp) 
+  "do validation
+  if empty(a:pat)
+    call QFGrep#print_err_msg("Empty pattern is not allowed")
+    return
+  endif
+
+  try
+    for d in a:cp
+      if (!a:invert)
+        if ( bufname(d['bufnr']) !~ a:pat && d['text'] !~ a:pat)
+          call remove(a:cp, index(a:cp,d))
+        endif
+      else " here do invert matching
+        if (bufname(d['bufnr']) =~ a:pat || d['text'] =~ a:pat)
+          call remove(a:cp, index(a:cp,d))
+        endif
+      endif
+    endfor
+    call setqflist(a:cp)
+    call QFGrep#print_HLInfo(len(a:cp) . ' entries in Grep result.')
+  catch /^Vim\%((\a\+)\)\=:E/
+    call QFGrep#print_err_msg('Pattern invalid')
+  endtry
+endfunction
+
+"if argument invert is 1, do invert match like grep -v
+function! QFGrep#grep_QuickFix(invert)
+  "get cp of QF
+  let cp = QFGrep#copy_QuickFix()
+  if empty(cp)
     call QFGrep#print_err_msg('Quickfix window is empty. Nothing could be grepped. ')
     return
   endif
-  let cp = deepcopy(all)
   call inputsave()
   echohl QFGPrompt
   let pat = input( s:msgHead . 'Pattern' . (a:invert?' (Invert-matching):':':'))
@@ -76,32 +114,19 @@ function! QFGrep#grep_QuickFix(invert)
   call inputrestore()
   "clear the cmdline
   exec 'redraw' 
-  if empty(pat)
-    call QFGrep#print_err_msg("Empty pattern is not allowed")
+
+  call QFGrep#do_grep(pat, a:invert, cp)
+endfunction
+
+"do grep on quickfix with pattern as argument
+function! QFGrep#grep_QuickFix_with_pattern( pat, invert )
+  let cp = QFGrep#copy_QuickFix()
+  if empty(cp)
+    call QFGrep#print_err_msg('Quickfix window is empty. Nothing could be grepped. ')
     return
   endif
-  try
-    for d in cp
-      if (!a:invert)
-        if ( bufname(d['bufnr']) !~ pat && d['text'] !~ pat)
-          call remove(cp, index(cp,d))
-        endif
-      else " here do invert matching
-        if (bufname(d['bufnr']) =~ pat || d['text'] =~ pat)
-          call remove(cp, index(cp,d))
-        endif
-      endif
-    endfor
-    if empty(cp)
-      call QFGrep#print_err_msg('Empty resultset, aborted.')
-    else		"found entries
-      call setqflist(cp)
-      call QFGrep#print_HLInfo(len(cp) . ' entries in Grep result.')
-    endif
-  catch /^Vim\%((\a\+)\)\=:E/
-    call QFGrep#print_err_msg('Pattern invalid')
-  endtry
 
+  call QFGrep#do_grep(a:pat, a:invert, cp)
 endfunction
 
 "restore quickfix items since last qf command

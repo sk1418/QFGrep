@@ -23,11 +23,12 @@ if exists("g:loaded_QFGrep") || &cp
   finish
 endif
 
-let s:version       = "1.0.3"
+let s:version       = "1.1.0"
 
 let g:loaded_QFGrep = 1
 
 "mappings
+"TODO <plug>mappings
 let g:QFG_Grep      = !exists('g:QFG_Grep')? '<Leader>g' : g:QFG_Grep
 let g:QFG_GrepV     = !exists('g:QFG_GrepV')? '<Leader>v' : g:QFG_GrepV
 let g:QFG_Restore   = !exists('g:QFG_Restore')? '<Leader>r' : g:QFG_Restore
@@ -35,9 +36,13 @@ let g:QFG_Restore   = !exists('g:QFG_Restore')? '<Leader>r' : g:QFG_Restore
 
 "autocommands 
 function! <SID>FTautocmdBatch()
-  command! QFGrep    call QFGrep#grep_QuickFix(0)  "invert flag =0
-  command! QFGrepV   call QFGrep#grep_QuickFix(1)  "invert flag =1
-  command! QFRestore call QFGrep#restore_QuickFix()
+  command! -nargs=0 QFGrep     call QFGrep#grep_QuickFix(0)  "invert flag =0
+  command! -nargs=0 QFGrepV    call QFGrep#grep_QuickFix(1)  "invert flag =1
+  command! -nargs=0 QFRestore  call QFGrep#restore_QuickFix()
+
+  command! -nargs=1 QFGrepPat  call QFGrep#grep_QuickFix_with_pattern("<args>",0)  "invert flag =0
+  command! -nargs=1 QFGrepPatV call QFGrep#grep_QuickFix_with_pattern("<args>",1)  "invert flag =1
+
   "mapping
   execute 'nnoremap <buffer><silent>' . g:QFG_Grep    . ' :QFGrep<cr>'
   execute 'nnoremap <buffer><silent>' . g:QFG_GrepV   . ' :QFGrepV<cr>'

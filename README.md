@@ -9,6 +9,8 @@ QFGrep README file
 	                            
 ##QFGrep
 
+(http://www.vim.org/scripts/script.php?script_id=4490)
+
 The Idea of QFGrep came from this Question@Stackoverflow: [Is it possible to grep Vim's quickfix](http://stackoverflow.com/questions/15406138) By [Arnis L.](http://stackoverflow.com/users/82062/arnis-l) Thank Arnis!
 
 The QFGrep plugin would be helpful when you got a lot of entries in Quickfix.  For example, you did an Ack/Grep with a not strict criteria. QFGrep can do further filtering for you, so that you could narrow your focus and jump to the right file right line quickly. At any time you could restore the original Quickfix entries. 

@@ -71,10 +71,10 @@ CONFIGURATION                                            *QFGrep-configuration*
 There are three `<Plug>` mappings in QFGrep, to let user easily create
 customized mapping
 
-<Plug>QFGrep
+<Plug>QFGrepG
     mapping for |:QFGrep| command. E.g >
 
-    nmap <buffer> {Mykeys} <Plug>QFGrep
+    nmap <buffer> {Mykeys} <Plug>QFGrepG
 <
     Default mapping: <Leader>g
 

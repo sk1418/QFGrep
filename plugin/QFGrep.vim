@@ -25,7 +25,7 @@ endif
 
 let g:loaded_QFGrep = 1
 
-let s:version       = "1.1.0"
+let s:version       = "1.1.1"
 command! QFGrepVersion echo "QFGrep Version: " . s:version
 
 

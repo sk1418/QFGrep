@@ -117,6 +117,10 @@ follow vim |:highlight| command.
 ==============================================================================
 CHANGELOG                                                    *QFGrep-changelog*
 
+version 1.1.1                2014-11-11
+    - fix the errMsg display problem when quickfix window is empty
+     (issue#7@github)
+
 version 1.1.0                2014-06-14~
     - add QFGrepPat and QFGrepPatV command, by pass interactive `input()`
     - create `<Plug>` mappings, remove global mapping variable

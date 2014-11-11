@@ -82,7 +82,6 @@ function! QFGrep#copy_QuickFix()
   let s:origQF = len( s:origQF )>0? s:origQF : getqflist()
   let all = getqflist()
   if empty(all)
-    call PrintErrMsg('Quickfix window is empty. Nothing could be grepped. ')
     return all
   endif
   return deepcopy(all)

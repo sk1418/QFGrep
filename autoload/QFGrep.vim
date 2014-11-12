@@ -99,12 +99,13 @@ function! QFGrep#do_grep(pat, invert, cp)
 
   try
     for d in a:cp
+      let line = bufname(d.bufnr).'|'.d.lnum.'| '.d.text
       if (!a:invert)
-        if ( bufname(d['bufnr']) !~ a:pat && d['text'] !~ a:pat)
+        if (line !~ a:pat)
           call remove(a:cp, index(a:cp,d))
         endif
       else " here do invert matching
-        if (bufname(d['bufnr']) =~ a:pat || d['text'] =~ a:pat)
+        if (line =~ a:pat)
           call remove(a:cp, index(a:cp,d))
         endif
       endif

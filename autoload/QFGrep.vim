@@ -99,9 +99,9 @@ function! QFGrep#do_grep(pat, invert, cp)
 
   try
     if (a:invert)
-      call filter(a:cp, "bufname(v:val['bufnr']) !~ a:pat && v:val['text'] !~ a:pat")
+      call filter(a:cp, "bufname(v:val['bufnr']).'|' !~ a:pat && '| '.v:val['text'] !~ a:pat")
     else
-      call filter(a:cp, "bufname(v:val['bufnr']) =~ a:pat || v:val['text'] =~ a:pat")
+      call filter(a:cp, "bufname(v:val['bufnr']).'|' =~ a:pat || '| '.v:val['text'] =~ a:pat")
     endif
 
     call setqflist(a:cp)

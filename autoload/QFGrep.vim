@@ -98,17 +98,12 @@ function! QFGrep#do_grep(pat, invert, cp)
   endif
 
   try
-    for d in a:cp
-      if (!a:invert)
-        if ( bufname(d['bufnr']) !~ a:pat && d['text'] !~ a:pat)
-          call remove(a:cp, index(a:cp,d))
-        endif
-      else " here do invert matching
-        if (bufname(d['bufnr']) =~ a:pat || d['text'] =~ a:pat)
-          call remove(a:cp, index(a:cp,d))
-        endif
-      endif
-    endfor
+    if (a:invert)
+      call filter(a:cp, "bufname(v:val['bufnr']) !~ a:pat && v:val['text'] !~ a:pat")
+    else
+      call filter(a:cp, "bufname(v:val['bufnr']) =~ a:pat || v:val['text'] =~ a:pat")
+    endif
+
     call setqflist(a:cp)
     call QFGrep#print_HLInfo(len(a:cp) . ' entries in Grep result.')
   catch /^Vim\%((\a\+)\)\=:E/

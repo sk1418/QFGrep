@@ -97,16 +97,16 @@ function! QFGrep#do_grep(pat, invert, cp)
     return
   endif
 
+  let line = getline(1, '$')
   try
-    for d in a:cp
-      let line = bufname(d.bufnr).'|'.d.lnum.'| '.d.text
+    for i in reverse(range(len(line)))
       if (!a:invert)
-        if (line !~ a:pat)
-          call remove(a:cp, index(a:cp,d))
+        if (line[i] !~ a:pat)
+          call remove(a:cp, i)
         endif
       else " here do invert matching
-        if (line =~ a:pat)
-          call remove(a:cp, index(a:cp,d))
+        if (line[i] =~ a:pat)
+          call remove(a:cp, i)
         endif
       endif
     endfor
@@ -120,6 +120,10 @@ endfunction
 " grep_QuickFix(): grep QF, get pattern from userinput {{{2
 "if argument invert is 1, do invert match like grep -v
 function! QFGrep#grep_QuickFix(invert)
+  if &buftype != 'quickfix'
+    call QFGrep#print_err_msg('commands work only in Quickfix buffer.')
+    return
+  endif
   "get cp of QF
   let cp = QFGrep#copy_QuickFix()
   if empty(cp)
@@ -150,6 +154,10 @@ endfunction
 
 "restore quickfix items since last qf command{{{2
 function! QFGrep#restore_QuickFix()
+  if &buftype != 'quickfix'
+    call QFGrep#print_err_msg('commands work only in Quickfix buffer.')
+    return
+  endif
   if len(s:origQF) > 0
     call setqflist(s:origQF)
     call QFGrep#print_HLInfo('Quickfix entries restored.')

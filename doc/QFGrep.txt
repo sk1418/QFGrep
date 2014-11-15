@@ -117,7 +117,7 @@ follow vim |:highlight| command.
 ==============================================================================
 CHANGELOG                                                    *QFGrep-changelog*
 
-version 1.1.1                2014-11-11
+version 1.1.1                2014-11-11~
     - fix the errMsg display problem when quickfix window is empty
      (issue#7@github)
     - grep on display line in quick fix buffer

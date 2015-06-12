@@ -25,7 +25,6 @@ if exists("g:autoloaded_QFGrep") || &cp
 endif
 let g:autoloaded_QFGrep = 1
 
-let s:origQF        = !exists("s:origQF")? [] : s:origQF
 "the message header
 let s:msgHead = '[QFGrep] ' 
 
@@ -64,15 +63,6 @@ function! QFGrep#print_HLInfo(msg)
   echohl None
 endfunction
 
-"invoked by autocmd: init_origQF(){{{2
-function! QFGrep#init_origQF()
-  let s:origQF = []
-endfunction
-
-"invoked by autocmd:fill_origQF() {{{2
-function! QFGrep#fill_origQF()
-  let s:origQF = QFGrep#get_list()
-endfunction
 
 "return true if the current window is a location list{{{2
 function! QFGrep#is_loc_list()
@@ -88,30 +78,53 @@ function! QFGrep#is_loc_list()
   return 0
 endfunction
 
-"return the result from either getqflist() or getloclist(){{{2
+"return the contents of quickfix/location list{{{2
 function! QFGrep#get_list()
+  " if the contents are being retrieved they are probably going to be changed;
+  " store the original, so that later it could be restored
   if QFGrep#is_loc_list()
-    return getloclist(0)
+    let current = getloclist(0)
+    if !exists('b:origLL') || !exists('b:lastLL') || current != b:lastLL
+      let b:origLL = current
+    endif
   else
-    return getqflist()
+    let current = getqflist()
+    if !exists('s:origQF') || !exists('s:lastQF') || current != s:lastQF
+      " Quickfix requires a g:var/s:var as it can be accessed from different
+      " tabpages
+      let s:origQF = current
+    endif
+  endif
+
+  return current
+endfunction
+
+"change the contents of quickfix/location list{{{2
+function! QFGrep#set_list(list)
+  " save the last modification, so we can detect if the quickfix has new content
+  if QFGrep#is_loc_list()
+    call setloclist(0, a:list)
+    let b:lastLL = a:list
+  else
+    call setqflist(a:list)
+    let s:lastQF = a:list
   endif
 endfunction
 
-"apply the right choice from either setqflist() or setloclist(){{{2
-function! QFGrep#set_list(list)
+"get original contents of quickfix/location list {{{2
+function! QFGrep#get_orig()
   if QFGrep#is_loc_list()
-    call setloclist(0, a:list)
+    return exists('b:origLL') ? b:origLL : []
   else
-    call setqflist(a:list)
+    return exists('s:origQF') ? s:origQF : []
   endif
 endfunction
+
 
 "logic funtions {{{1
 
 "QFGrep#copy_QuickFix(): make a copy of current QF {{{2
 function! QFGrep#copy_QuickFix()
-  "store original quickfix lists, so that later could be restored
-  let s:origQF = len( s:origQF )>0? s:origQF : QFGrep#get_list()
   let all = QFGrep#get_list()
   if empty(all)
     return all
@@ -190,8 +203,9 @@ function! QFGrep#restore_QuickFix()
     call QFGrep#print_err_msg('commands work only in Quickfix buffer.')
     return
   endif
-  if len(s:origQF) > 0
-    call QFGrep#set_list(s:origQF)
+  let orig = QFGrep#get_orig()
+  if !empty(orig)
+    call QFGrep#set_list(orig)
     call QFGrep#print_HLInfo('Quickfix entries restored.')
   else
     call QFGrep#print_err_msg("Nothing can be restored")

@@ -58,8 +58,6 @@ endfunction
 
 augroup QFG
   au!
-  autocmd QuickFixCmdPre * call QFGrep#init_origQF()
-  autocmd QuickFixCmdPost * call QFGrep#fill_origQF()
   autocmd FileType qf call <SID>FTautocmdBatch()
 augroup end
 

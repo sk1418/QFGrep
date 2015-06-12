@@ -71,7 +71,39 @@ endfunction
 
 "invoked by autocmd:fill_origQF() {{{2
 function! QFGrep#fill_origQF()
-  let s:origQF = getqflist()
+  let s:origQF = QFGrep#get_list()
+endfunction
+
+"return true if the current window is a location list{{{2
+function! QFGrep#is_loc_list()
+  " it is necessary to check the current filename as a location list may have no
+  " elements (e.g.: lgrep return no matches)
+  redir => l:filename
+  silent file
+  redir END
+
+  if !empty(getloclist(0)) || l:filename =~ 'Location List'
+    return 1
+  endif
+  return 0
+endfunction
+
+"return the result from either getqflist() or getloclist(){{{2
+function! QFGrep#get_list()
+  if QFGrep#is_loc_list()
+    return getloclist(0)
+  else
+    return getqflist()
+  endif
+endfunction
+
+"apply the right choice from either setqflist() or setloclist(){{{2
+function! QFGrep#set_list(list)
+  if QFGrep#is_loc_list()
+    call setloclist(0, a:list)
+  else
+    call setqflist(a:list)
+  endif
 endfunction
 
 "logic funtions {{{1
@@ -79,8 +111,8 @@ endfunction
 "QFGrep#copy_QuickFix(): make a copy of current QF {{{2
 function! QFGrep#copy_QuickFix()
   "store original quickfix lists, so that later could be restored
-  let s:origQF = len( s:origQF )>0? s:origQF : getqflist()
-  let all = getqflist()
+  let s:origQF = len( s:origQF )>0? s:origQF : QFGrep#get_list()
+  let all = QFGrep#get_list()
   if empty(all)
     return all
   endif
@@ -110,7 +142,7 @@ function! QFGrep#do_grep(pat, invert, cp)
         endif
       endif
     endfor
-    call setqflist(a:cp)
+    call QFGrep#set_list(a:cp)
     call QFGrep#print_HLInfo(len(a:cp) . ' entries in Grep result.')
   catch /^Vim\%((\a\+)\)\=:E/
     call QFGrep#print_err_msg('Pattern invalid')
@@ -159,7 +191,7 @@ function! QFGrep#restore_QuickFix()
     return
   endif
   if len(s:origQF) > 0
-    call setqflist(s:origQF)
+    call QFGrep#set_list(s:origQF)
     call QFGrep#print_HLInfo('Quickfix entries restored.')
   else
     call QFGrep#print_err_msg("Nothing can be restored")

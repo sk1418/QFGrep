@@ -105,9 +105,11 @@ function! QFGrep#set_list(list)
   if QFGrep#is_loc_list()
     call setloclist(0, a:list)
     let b:lastLL = a:list
+    silent doautocmd QuickFixCmdPost lqfgrep
   else
     call setqflist(a:list)
     let s:lastQF = a:list
+    silent doautocmd QuickFixCmdPost qfgrep
   endif
 endfunction
 

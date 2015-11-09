@@ -43,6 +43,9 @@ USAGE                                                            *QFGrep-usage*
 
 The above mapping could be customized. see |QFGrep-mapping|
 
+The QuickFixCmdPost autocommand fires with pattern qfgrep (or lqfgrep) after a
+successful operation and can be used for advanced customization.
+
                                   *:QFGrepV* *:QFRestore* *:QFGrep* *QFGrep-commands*
 |QFGrep| has following commands:
 

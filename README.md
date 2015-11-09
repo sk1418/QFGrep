@@ -35,7 +35,6 @@ The QFGrep plugin would be helpful when you got a lot of entries in Quickfix/loc
 
 ##Screencast
 
-![QFGrep GIF Animation](https://lh6.googleusercontent.com/--RzG-d1pRmc/UVDy8gPgjLI/AAAAAAAAGq4/beCMVN6TJXg/s971/20130326_020156.gif, "screencast")
-
+![QFGrep GIF Animation](https://raw.github.com/sk1418/sharedResources/master/QFGrep/demo.gif)
 
  vim:ft=markdown:ts=2:sw=2:ts=2:fdm=marker:expandtab

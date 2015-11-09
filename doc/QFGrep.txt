@@ -22,11 +22,11 @@ Help on using QFGrep
 ==============================================================================
 INTRODUCTION                                                     *QFGrep-intro*
 
-The |QFGrep| plugin would be helpful when you got a lot of entries in |Quickfix|.
-For example, you did an Ack/Grep with a not strict criteria. |QFGrep| can do
-further filtering for you, so that you could narrow your focus and jump to the
-right file right line quickly. At any time you could restore the original
-|Quickfix| entries. 
+The |QFGrep| plugin would be helpful when you got a lot of entries in
+|quickfix|/|location-list| For example, you did an Ack/Grep with a not strict
+criteria. |QFGrep| can do further filtering for you, so that you could narrow
+your focus and jump to the right file right line quickly. At any time you
+could restore the original |quickfix|/|location-list| entries. 
 
 |QFGrep| will look for the given pattern in buffer name (filename) and description
 text.
@@ -35,7 +35,7 @@ text.
 USAGE                                                            *QFGrep-usage*
 
 
-|QFGrep| commands and mappings work only in |Quickfix| buffer.
+|QFGrep| commands and mappings work only in |quickfix|/|location-list| buffer.
 
 <Leader>g to filter entries (user will be asked for pattern)
 <Leader>v to inverted filter entries (like grep -v)
@@ -119,6 +119,9 @@ follow vim |:highlight| command.
 
 ==============================================================================
 CHANGELOG                                                    *QFGrep-changelog*
+
+version 2.0.0                2015-11-09~
+    - QFGrep supports location-list (thanks Marcelo D Montu)
 
 version 1.1.1                2014-11-11~
     - fix the errMsg display problem when quickfix window is empty

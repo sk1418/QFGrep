@@ -168,13 +168,13 @@ endfunction
 "if argument invert is 1, do invert match like grep -v
 function! QFGrep#grep_QuickFix(invert)
   if &buftype != 'quickfix'
-    call QFGrep#print_err_msg('commands work only in Quickfix buffer.')
+    call QFGrep#print_err_msg('commands work only in Quickfix/location-list buffer.')
     return
   endif
   "get cp of QF
   let cp = QFGrep#copy_QuickFix()
   if empty(cp)
-    call QFGrep#print_err_msg('Quickfix window is empty. Nothing could be grepped. ')
+    call QFGrep#print_err_msg('Quickfix/location-list window is empty. Nothing could be grep-ed. ')
     return
   endif
   call inputsave()
@@ -192,7 +192,7 @@ endfunction
 function! QFGrep#grep_QuickFix_with_pattern( pat, invert )
   let cp = QFGrep#copy_QuickFix()
   if empty(cp)
-    call QFGrep#print_err_msg('Quickfix window is empty. Nothing could be grepped. ')
+    call QFGrep#print_err_msg('Quickfix/location-list window is empty. Nothing could be grep-ed. ')
     return
   endif
 
@@ -202,13 +202,13 @@ endfunction
 "restore quickfix items since last qf command{{{2
 function! QFGrep#restore_QuickFix()
   if &buftype != 'quickfix'
-    call QFGrep#print_err_msg('commands work only in Quickfix buffer.')
+    call QFGrep#print_err_msg('commands work only in Quickfix/location-list buffer.')
     return
   endif
   let orig = QFGrep#get_orig()
   if !empty(orig)
     call QFGrep#set_list(orig)
-    call QFGrep#print_HLInfo('Quickfix entries restored.')
+    call QFGrep#print_HLInfo('Original entries are restored.')
   else
     call QFGrep#print_err_msg("Nothing can be restored")
   endif

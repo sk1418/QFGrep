@@ -157,7 +157,16 @@ function! QFGrep#do_grep(pat, invert, cp)
         endif
       endif
     endfor
+    if exists("w:quickfix_title")
+      let l:title = w:quickfix_title
+    endif
     call QFGrep#set_list(a:cp)
+    if exists("l:title")
+      if l:title !~ '\V'.s:msgHead
+        let l:title = s:msgHead.l:title
+      endif
+      let w:quickfix_title = l:title
+    endif
     call QFGrep#print_HLInfo(len(a:cp) . ' entries in Grep result.')
   catch /^Vim\%((\a\+)\)\=:E/
     call QFGrep#print_err_msg('Pattern invalid')
@@ -207,7 +216,16 @@ function! QFGrep#restore_QuickFix()
   endif
   let orig = QFGrep#get_orig()
   if !empty(orig)
+    if exists("w:quickfix_title")
+      let l:title = w:quickfix_title
+    endif
     call QFGrep#set_list(orig)
+    if exists("l:title")
+      if l:title != '\V'.s:msgHead
+        let l:title = substitute(l:title, '\V'.s:msgHead, "", "")
+      endif
+      let w:quickfix_title = l:title
+    endif
     call QFGrep#print_HLInfo('Original entries are restored.')
   else
     call QFGrep#print_err_msg("Nothing can be restored")

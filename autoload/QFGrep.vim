@@ -103,6 +103,11 @@ endfunction
 function! QFGrep#set_list(list)
   " save the last modification, so we can detect if the quickfix has new content
   if QFGrep#is_loc_list()
+    "save window title, so that after setting qf, we can restore the title
+    if exists("w:quickfix_title")
+      let l:title_kept = w:quickfix_title
+    endif
+
     call setloclist(0, a:list)
     let b:lastLL = a:list
     silent doautocmd QuickFixCmdPost lqfgrep
@@ -110,6 +115,13 @@ function! QFGrep#set_list(list)
     call setqflist(a:list)
     let s:lastQF = a:list
     silent doautocmd QuickFixCmdPost qfgrep
+  endif
+  "restore the window title if there was one
+  if exists("l:title_kept")
+    if l:title_kept !~ '\V'.s:msgHead
+      let l:title_kept = s:msgHead.l:title_kept
+    endif
+    let w:quickfix_title = l:title_kept
   endif
 endfunction
 
@@ -157,16 +169,7 @@ function! QFGrep#do_grep(pat, invert, cp)
         endif
       endif
     endfor
-    if exists("w:quickfix_title")
-      let l:title = w:quickfix_title
-    endif
     call QFGrep#set_list(a:cp)
-    if exists("l:title")
-      if l:title !~ '\V'.s:msgHead
-        let l:title = s:msgHead.l:title
-      endif
-      let w:quickfix_title = l:title
-    endif
     call QFGrep#print_HLInfo(len(a:cp) . ' entries in Grep result.')
   catch /^Vim\%((\a\+)\)\=:E/
     call QFGrep#print_err_msg('Pattern invalid')
@@ -216,16 +219,7 @@ function! QFGrep#restore_QuickFix()
   endif
   let orig = QFGrep#get_orig()
   if !empty(orig)
-    if exists("w:quickfix_title")
-      let l:title = w:quickfix_title
-    endif
     call QFGrep#set_list(orig)
-    if exists("l:title")
-      if l:title != '\V'.s:msgHead
-        let l:title = substitute(l:title, '\V'.s:msgHead, "", "")
-      endif
-      let w:quickfix_title = l:title
-    endif
     call QFGrep#print_HLInfo('Original entries are restored.')
   else
     call QFGrep#print_err_msg("Nothing can be restored")

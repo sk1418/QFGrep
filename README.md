@@ -13,7 +13,7 @@ QFGrep README file
 
 The Idea of QFGrep came from this Question@Stackoverflow: [Is it possible to grep Vim's quickfix](http://stackoverflow.com/questions/15406138) By [Arnis L.](http://stackoverflow.com/users/82062/arnis-l) Thank Arnis!
 
-The QFGrep plugin would be helpful when you got a lot of entries in Quickfix/location-list.  For example, you did an Ack/Grep with a not strict criteria. QFGrep can do further filtering for you, so that you could narrow your focus and jump to the right file right line quickly. At any time you could restore the original Quickfix/location-list entries. 
+The QFGrep plugin would be helpful when you got a lot of entries in Quickfix/location-list. For example, you did an Ack/Grep with a not strict criteria. QFGrep can do further filtering for you, so that you could narrow your focus and jump to the right file right line quickly. At any time you could restore the original Quickfix/location-list entries. 
 
 ##Features
 
@@ -21,7 +21,7 @@ The QFGrep plugin would be helpful when you got a lot of entries in Quickfix/loc
 - restore original Quickfix/location-list entries
 
 ##Usage
-- fill Quickfix/location-list window with some entries (grep, vimgrep, ack or make),move curosr to quickfix/location-list buffer
+- fill Quickfix/location-list window with some entries (grep, vimgrep, ack or make), move cursor to quickfix/location-list buffer
 - `<Leader>g` input pattern to do further filtering
 - `<Leader>v` input pattern to do further inverted filtering (like grep -v)
 - `<Leader>r` restore the Quickfix/location-list with original entries

@@ -1,7 +1,7 @@
 " QFGrep  : a vim plugin to filter Quickfix entries
 " Author  : Kai Yuan <kent.yuan@gmail.com>
 " License: {{{
-"Copyright (c) 2013 Kai Yuan
+"Copyright (c) 2013-2016 Kai Yuan
 "Permission is hereby granted, free of charge, to any person obtaining a copy of
 "this software and associated documentation files (the "Software"), to deal in
 "the Software without restriction, including without limitation the rights to
